@@ -253,7 +253,7 @@ class homepageState extends State<Update> {
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.teal[700],
         title: Text("UPDATE DATA"),
         actions: <Widget>[
           IconButton(
@@ -281,7 +281,7 @@ class homepageState extends State<Update> {
                       decoration: InputDecoration(
                           labelText: "Photo",
                           suffixIcon: RaisedButton(
-                            color: Colors.blueGrey[600],
+                            color: Colors.teal[600],
                             onPressed: pickImagefromGallery,
                             child: Text("Select image", textAlign: TextAlign.center,),
                           )),

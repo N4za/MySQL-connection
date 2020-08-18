@@ -20,7 +20,7 @@ class DetailPage extends StatelessWidget{
       appBar: AppBar(
         title: Text("USER DATA"),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.lightGreen[700],
       ),
       body: Container(
         width: 700,
@@ -61,7 +61,7 @@ class DetailPage extends StatelessWidget{
                   ],
                 ),
                 new Divider(
-                    color: Colors.blueGrey[600],
+                    color: Colors.lightGreen[600],
                     indent: 20,
                     endIndent: 20,
                     thickness: 3.0),
@@ -77,7 +77,7 @@ class DetailPage extends StatelessWidget{
                 ),
                 new Padding(padding: EdgeInsets.all(10.0),),
                 Chip(
-                  backgroundColor: Colors.blueGrey[600],
+                  backgroundColor: Colors.lightGreen[600],
                   padding: const EdgeInsets.symmetric(vertical: 3,horizontal:60),
                   avatar: CircleAvatar(
                     backgroundColor: Colors.white,
@@ -87,7 +87,7 @@ class DetailPage extends StatelessWidget{
                 ),
                 new Padding(padding: EdgeInsets.all(10.0),),
                 Chip(
-                  backgroundColor: Colors.blueGrey[600],
+                  backgroundColor: Colors.lightGreen[600],
                   padding: const EdgeInsets.symmetric(vertical: 3,horizontal:60),
                   avatar: CircleAvatar(
                     backgroundColor: Colors.white,
@@ -97,7 +97,7 @@ class DetailPage extends StatelessWidget{
                 ),
                 new Padding(padding: EdgeInsets.all(10.0),),
                 Chip(
-                  backgroundColor: Colors.blueGrey[600],
+                  backgroundColor: Colors.lightGreen[600],
                   padding: const EdgeInsets.symmetric(vertical: 3,horizontal:60),
                   avatar: CircleAvatar(
                     backgroundColor: Colors.white,

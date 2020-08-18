@@ -158,7 +158,7 @@ class homepageState extends State<Insert> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.teal[700],
         title: Text("INSERT DATA"),),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -174,7 +174,7 @@ class homepageState extends State<Insert> {
                       decoration: InputDecoration(
                           labelText: "Photo",
                           suffixIcon: RaisedButton(
-                            color: Colors.blueGrey[600],
+                            color: Colors.teal[600],
                             onPressed: pickImagefromGallery,
                             child: Text("Select image", textAlign: TextAlign.center,),
                           )),
@@ -244,7 +244,7 @@ class homepageState extends State<Insert> {
           _clearValues();
         },
         child: Icon(Icons.add, color: Colors.white),
-        backgroundColor: Colors.blueGrey[600],
+        backgroundColor: Colors.teal[600],
       ),
     );
   }

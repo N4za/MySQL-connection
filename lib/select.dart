@@ -16,7 +16,7 @@ class _myHomePageState extends State<Select> {
   TextEditingController searchController = TextEditingController();
 
   Future<List<Student>> fetchStudent() async {
-    String url = "http://192.168.0.9/Students/GetStudent.php";
+    String url = "http://127.0.0.1/Students/sqloperations.php";
     try {
       final response = await http.get(url);
       if (200 == response.statusCode) {
@@ -42,7 +42,7 @@ class _myHomePageState extends State<Select> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.teal[700],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: _isSearching ? TextField(

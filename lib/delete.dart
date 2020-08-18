@@ -192,7 +192,7 @@ class homepageState extends State<Delete> {
                     });
                   }),
 
-              DataCell(IconButton(icon: Icon(Icons.delete, color: Colors.blueGrey),
+              DataCell(IconButton(icon: Icon(Icons.delete, color: Colors.lightGreen),
                   onPressed: (){
                     _deleteData(student);
                     _showSnackBar(context, 'Datos eliminados correctamente');
@@ -211,7 +211,7 @@ class homepageState extends State<Delete> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.lightGreen[700],
         title: Text("DELETE DATA"),
         actions: <Widget>[
           IconButton(

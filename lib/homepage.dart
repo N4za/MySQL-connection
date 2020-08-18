@@ -233,7 +233,7 @@ class homepageState extends State<homepage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home, color: Colors.blueGrey),
+              leading: Icon(Icons.home, color: Colors.teal),
               title: Text("Home",
                 style: TextStyle(
                     color: Colors.white,
@@ -248,7 +248,7 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.add_to_photos, color: Colors.blueGrey[800]),
+              leading: Icon(Icons.add_to_photos, color: Colors.teal[800]),
               title: Text("Insert Data",
                 style: TextStyle(
                     color: Colors.white,
@@ -263,7 +263,7 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.update, color: Colors.blueGrey[300]),
+              leading: Icon(Icons.update, color: Colors.teal[300]),
               title: Text("Update Data",
                 style: TextStyle(
                     color: Colors.white,
@@ -277,7 +277,7 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.delete_forever, color: Colors.blueGrey[600]),
+              leading: Icon(Icons.delete_forever, color: Colors.teal[600]),
               title: Text("Delete Data",
                 style: TextStyle(
                     color: Colors.white,
@@ -292,7 +292,7 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-                leading: Icon(Icons.person, color: Colors.blueGrey[200]),
+                leading: Icon(Icons.person, color: Colors.teal[200]),
                 title: Text("Select Data",
                   style: TextStyle(
                       color: Colors.white,
@@ -311,7 +311,7 @@ class homepageState extends State<homepage> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[700],
+        backgroundColor: Colors.teal[700],
         title: Text("MYSQL REMOTE BD OPERATIONS"),
         actions: <Widget>[
           IconButton(
