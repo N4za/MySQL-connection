@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'student.dart';
 import 'package:flutter/material.dart';
 import 'bd_connections.dart';
@@ -11,7 +9,7 @@ import 'select.dart';
 
 class homepage extends StatefulWidget {
   homepage() : super();
-  final String title = "MySQL Connection";
+  final String title = "BD Connection";
 
   @override
   homepageState createState() => homepageState();
@@ -31,6 +29,7 @@ class homepageState extends State<homepage> {
   Student _selectStudent;
   bool _isUpdating;
   String imagen;
+  //String _titleProgress;
 
   @override
   void initState() {
@@ -46,10 +45,8 @@ class homepageState extends State<homepage> {
     _phoneConroller = TextEditingController();
     _matriculaConroller = TextEditingController();
     _fotoConroller = TextEditingController();
-    //Llamar al método que llena la DataTable
     _selectData;
   }
-
   _showSnackBar(context, message) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
@@ -69,6 +66,7 @@ class homepageState extends State<homepage> {
       print("Empy fields");
       return;
     }
+    //_showProgress('Adding Student...');
     BDConnections.insertData(_firstnameConroller.text, _lastname1Conroller.text, _lastname2Conroller.text, _emailConroller.text, _phoneConroller.text, _matriculaConroller.text, _fotoConroller.text)
         .then((result) {
       if ('sucess' == result) {
@@ -80,7 +78,8 @@ class homepageState extends State<homepage> {
         _phoneConroller.text = "";
         _matriculaConroller.text = "";
         _fotoConroller.text = "";
-        _selectData;
+        //Llamar la consulta general
+        _selectData;  //REFRESH LIST AFTER ADDING
         _clearValues();
       }
     });
@@ -88,51 +87,55 @@ class homepageState extends State<homepage> {
 
   //SELECT DATA
   get _selectData {
+    //_showSnackBar('Loading Student...');
     BDConnections.selectData().then((students) {
       setState(() {
         _Students = students;
       });
+      //Verificar si tenemos algo de retorno
       _showSnackBar(context, "Data Acquired");
       print("size of Students ${students.length}");
     });
   }
 
-  //DELETE DATA
+  //DELETE DATA 
   _deleteData(Student student){
+    //_showSnackBar('Deleting Student...');
     BDConnections.deleteData(student.id).then((result){
       if('success' == result){
-        _selectData;
+        _selectData; //REFRESH LIST AFTER DELETE
       }
     });
   }
 
   //CLEAR TEXTFIELD VALUES
   _clearValues(){
-    _firstnameConroller.text = "";
-    _lastname1Conroller.text = "";
-    _lastname2Conroller.text = "";
-    _emailConroller.text = "";
-    _phoneConroller.text = "";
-    _matriculaConroller.text = "";
-    _fotoConroller.text = "";
+        _firstnameConroller.text = "";
+        _lastname1Conroller.text = "";
+        _lastname2Conroller.text = "";
+        _emailConroller.text = "";
+        _phoneConroller.text = "";
+        _matriculaConroller.text = "";
+        _fotoConroller.text = "";
   }
 
   _showValues(Student student){
-    _firstnameConroller.text = student.firstName;
-    _lastname1Conroller.text = student.lastName1;
-    _lastname2Conroller.text = student.lastName2;
-    _emailConroller.text = student.email;
-    _phoneConroller.text = student.phone;
-    _matriculaConroller.text = student.matricula;
-    imagen = student.foto;
+        _firstnameConroller.text = student.firstName;
+        _lastname1Conroller.text = student.lastName1;
+        _lastname2Conroller.text = student.lastName2;
+        _emailConroller.text = student.email;
+        _phoneConroller.text = student.phone;
+        _matriculaConroller.text = student.matricula;
+        imagen = student.foto;
   }
 
-  //CREATING DATA TABLE
+  //************************CREATING DATA TABLE*****************************
   SingleChildScrollView _body() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         columns: [
+          //DataColumn(label: Text('ID')),
           DataColumn(label: Text('Name')),
           DataColumn(label: Text('Last Name 1')),
           DataColumn(label: Text('Last Name 2')),
@@ -140,63 +143,79 @@ class homepageState extends State<homepage> {
           DataColumn(label: Text('Phone')),
           DataColumn(label: Text('Matricula')),
           DataColumn(label: Text('Fotografía')),
+          //SHOW A DELETE BUTTON
+          //DataColumn(label: Text('DELETE'))
         ],
         rows: _Students.map((student) => DataRow(
             cells: [
+              //COMO ESTA EN EL ARCHIVO STUDENT.DART
+              //ADD TAP IN ROW AND POPULATE THE TEXTFIELDS WITH THE CORRESPONDING VALUES TO UPDATE
 
               DataCell(Text(student.firstName.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Text(student.lastName1.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Text(student.lastName2.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Text(student.email.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Text(student.phone.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Text(student.matricula.toUpperCase()),
-                  onTap: (){
-                    _showValues(student);
-                    _selectStudent = student;
-                    setState(() {
-                      _isUpdating = true;
-                    });
-                  }),
+              onTap: (){
+                _showValues(student);
+                // Set the selected student to update
+                _selectStudent = student;
+                // Set flag updating tu true to indicate in Update Mode
+                setState(() {
+                  _isUpdating = true;
+                });
+              }),
 
               DataCell(Convertir.imageFromBase64sString(student.foto)),
 
@@ -206,12 +225,13 @@ class homepageState extends State<homepage> {
     );
   }
 
+  //******************************************************************
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
-      //MENU
+      //MENU LATERAL
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -224,19 +244,19 @@ class homepageState extends State<homepage> {
                   )
               ),
               padding: EdgeInsets.all(60),
-              child: Text("   OPERATIONS:",
+              child: Text("   OPERACIONES:",
                 style: TextStyle(
                     fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white
+                    //fontWeight: FontWeight.bold,
+                    color: Colors.yellow[800]
                 ),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home, color: Colors.teal),
+              leading: Icon(Icons.home, color: Colors.yellow[800]),
               title: Text("Home",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.grey,
                     fontSize: 20
                 ),
               ),
@@ -248,10 +268,10 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.add_to_photos, color: Colors.teal[800]),
+              leading: Icon(Icons.add_to_photos, color: Colors.yellow[800]),
               title: Text("Insert Data",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.grey,
                     fontSize: 20
                 ),
               ),
@@ -263,10 +283,10 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.update, color: Colors.teal[300]),
+              leading: Icon(Icons.update, color: Colors.yellow[800]),
               title: Text("Update Data",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.grey,
                     fontSize: 20
                 ),),
               onTap: () {
@@ -277,10 +297,10 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-              leading: Icon(Icons.delete_forever, color: Colors.teal[600]),
+              leading: Icon(Icons.delete_forever, color: Colors.yellow[800]),
               title: Text("Delete Data",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.grey,
                     fontSize: 20
                 ),
               ),
@@ -292,27 +312,27 @@ class homepageState extends State<homepage> {
                     ));
               },),
             ListTile(
-                leading: Icon(Icons.person, color: Colors.teal[200]),
-                title: Text("Select Data",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20
-                  ),
+              leading: Icon(Icons.person, color: Colors.yellow[800]),
+              title: Text("Select Data",
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20
                 ),
-                onTap: () {
-                  Navigator.push(context,
-                      new MaterialPageRoute(
-                          builder: (context)
-                          => new Select()
-                      ));
-                }
+              ),
+              onTap: () {
+                Navigator.push(context,
+                  new MaterialPageRoute(
+                    builder: (context)
+                        => new Select()
+                ));
+              }
             ),
           ],
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.teal[700],
-        title: Text("MYSQL REMOTE BD OPERATIONS"),
+        backgroundColor: Colors.yellow[800],
+        title: Text("REMOTE BD OPERATIONS"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -329,19 +349,12 @@ class homepageState extends State<homepage> {
       body: Container(
         child: Column(
           children: <Widget>[
-
             Expanded(
               child: _body(),
             ),
           ],
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          _insertData();
-        },
-        child: Icon(Icons.add),
-      ),*/
     );
   }
 }

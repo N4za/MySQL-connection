@@ -3,24 +3,28 @@ import 'student.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'detalles.dart';
+import 'alumno.dart';
 
 class Select extends StatefulWidget {
   @override
   _myHomePageState createState() => new _myHomePageState();
 }
 
+
 class _myHomePageState extends State<Select> {
+  //get fechStudent => null;
   String searchString = "";
   bool _isSearching = false;
   TextEditingController searchController = TextEditingController();
 
   Future<List<Student>> fetchStudent() async {
-    String url = "http://127.0.0.1/Students/sqloperations.php";
+    String url = "http://192.168.0.106/Students/GetStudent.php";
     try {
       final response = await http.get(url);
+      // print('ListView response: ${response.body}');
+      //  return studentFromJson(response.body);
       if (200 == response.statusCode) {
-
+        //Mapear la lista
         List<Student> list = parseResponse(response.body);
         return list;
       } else {
@@ -33,6 +37,7 @@ class _myHomePageState extends State<Select> {
     }
   }
 
+  //ParseResponse Method
   static List<Student> parseResponse(String responseBody) {
     final parseData = json.decode(responseBody).cast<Map<String, dynamic>>();
     return parseData.map<Student>((json) => Student.fromJson(json)).toList();
@@ -42,12 +47,12 @@ class _myHomePageState extends State<Select> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal[700],
+        backgroundColor: Colors.yellow[800],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: _isSearching ? TextField(
           decoration: InputDecoration(
-              hintText: "Buscando..."),
+              hintText: "..."),
           onChanged: (value) {
             setState(() {
               searchString = value;
@@ -57,7 +62,7 @@ class _myHomePageState extends State<Select> {
         )
             :Text("SELECT USER",
           style: TextStyle(
-              color: Colors.white
+            color: Colors.white
           ),
         ),
         actions: <Widget>[
@@ -78,7 +83,7 @@ class _myHomePageState extends State<Select> {
               });
             },
           )
-        ],
+         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -94,7 +99,7 @@ class _myHomePageState extends State<Select> {
                   itemBuilder: (BuildContext context, int index) {
                     Student student = snapshot.data[index];
                     return snapshot.data[index].matricula.contains(searchController.text)
-                        ? ListTile(
+                    ? ListTile(
                       leading: CircleAvatar(
                         minRadius: 30.0,
                         maxRadius: 30.0,
@@ -102,30 +107,30 @@ class _myHomePageState extends State<Select> {
                         backgroundImage: Convertir.imageFromBase64sString(   '${student.foto}',).image,
                       ),
                       title: new Text(
-                        '${student.firstName}',
+                          '${student.firstName}',
                         style: TextStyle(
                           fontSize: 18.0,
                         ),
                       ),
                       subtitle: new Text(
-                        '${student.matricula}',
+                         '${student.matricula}',
                         style: TextStyle(
                           fontSize: 15.0,
                         ),
                       ),
                       onTap: (){
-                        Navigator.push(context,
-                            new MaterialPageRoute(builder: (context)=> DetailPage(snapshot.data[index])));
-                      },
+                              Navigator.push(context,
+                                new MaterialPageRoute(builder: (context)=> DetailPage(snapshot.data[index])));
+                            },
                     )
-                        :Container();
+                    :Container();
                   },
                 );
               }
               return Container(
                   child: Center(
-                    child: CircularProgressIndicator(),
-                  ));
+                child: CircularProgressIndicator(),
+              ));
             },
           ),
         ),

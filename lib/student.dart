@@ -1,5 +1,5 @@
 import 'dart:convert';
-class Student {
+class Student{
 
   List<Student> studentFromJson(String str) => List<Student>.from(json.decode(str).map((x) => Student.fromJson(x)));
 
@@ -16,6 +16,7 @@ class Student {
 
   Student({this.id, this.firstName, this.lastName1, this.lastName2, this.email, this.phone, this.matricula, this.foto});
 
+  //Patrones de diseño, ventajas de regresar un objeto
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
       id: json['id'] as String,
@@ -28,16 +29,16 @@ class Student {
       foto: json['foto'] as String,
     );
   }
-
+  
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "first_name": firstName,
-    "last_name1": lastName1,
-    "last_name2": lastName2,
-    "email": email,
-    "phone": phone,
-    "matricula": matricula,
-    "foto": foto,
+        "id": id,
+        "first_name": firstName,
+        "last_name1": lastName1,
+        "last_name2": lastName2,
+        "email": email,
+        "phone": phone,
+        "matricula": matricula,
+        "foto": foto,
   };
 
 }

@@ -29,7 +29,7 @@ class homepageState extends State<Insert> {
   Student _selectStudent;
   bool _isUpdating;
   String imagen;
-
+  //String _titleProgress;
 
   @override
   void initState() {
@@ -37,6 +37,7 @@ class homepageState extends State<Insert> {
     _Students = [];
     _isUpdating = false;
     Student _selectedStudent;
+    //_titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
     _firstnameConroller = TextEditingController();
     _lastname1Conroller = TextEditingController();
@@ -45,19 +46,32 @@ class homepageState extends State<Insert> {
     _phoneConroller = TextEditingController();
     _matriculaConroller = TextEditingController();
     _fotoConroller = TextEditingController();
+    //Llamar al método que llena la DataTable
     _selectData;
   }
+
+  //******************************************************************
+  //Métodos de manejar de la BD
 
   //Desplegar la snackbar
   _showSnackBar(context, message) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
 
+  /*UPDATE TITLE IN THE APPBAR TITLE
+  _showProgress(String message){
+    setState(() {
+      _titleProgress = message;
+    });
+  }*/
+
   //CREATE TABLE
   _createTable() {
+    //_showProgress('Creating Table...');
     BDConnections.createTable().then((result) {
       if ('sucess' == result) {
         _showSnackBar(context, result);
+        //_showProgress(widget.title);
       }
     });
   }
@@ -69,6 +83,7 @@ class homepageState extends State<Insert> {
       print("Empy fields");
       return;
     }
+    //_showProgress('Adding Student...');
     BDConnections.insertData(_firstnameConroller.text, _lastname1Conroller.text, _lastname2Conroller.text, _emailConroller.text, _phoneConroller.text, _matriculaConroller.text, imagen)
         .then((result) {
       if ('sucess' == result) {
@@ -80,7 +95,8 @@ class homepageState extends State<Insert> {
         _phoneConroller.text = "";
         _matriculaConroller.text = "";
         _fotoConroller.text = "";
-        _selectData;
+        //Llamar la consulta general
+        _selectData; //REFRESH LIST AFTER ADDING
         _clearValues();
       }
     });
@@ -88,10 +104,12 @@ class homepageState extends State<Insert> {
 
   //SELECT DATA
   get _selectData {
+    //_showSnackBar('Loading Student...');
     BDConnections.selectData().then((students) {
       setState(() {
         _Students = students;
       });
+      //Verificar si tenemos algo de retorno
       _showSnackBar(context, "Data Acquired");
       print("size of Students ${students.length}");
     });
@@ -102,9 +120,10 @@ class homepageState extends State<Insert> {
     setState(() {
       _isUpdating = true;
     });
+    //_showSnackBar('Updating Student...');
     BDConnections.updateData(student.id, _firstnameConroller.text, _lastname1Conroller.text, _lastname2Conroller.text, _emailConroller.text, _phoneConroller.text, _matriculaConroller.text, _fotoConroller.text).then((result){
       if('success' == result){
-        _selectData;
+        _selectData; //REFRESH LIST AFTER UPDATE
         setState(() {
           _isUpdating = false;
         });
@@ -113,11 +132,12 @@ class homepageState extends State<Insert> {
     });
   }
 
-  //DELETE DATA
+  //DELETE DATA 
   _deleteData(Student student){
+    //_showSnackBar('Deleting Student...');
     BDConnections.deleteData(student.id).then((result){
       if('success' == result){
-        _selectData;
+        _selectData; //REFRESH LIST AFTER DELETE
       }
     });
   }
@@ -127,6 +147,7 @@ class homepageState extends State<Insert> {
     ImagePicker.pickImage(source: ImageSource.gallery).then((imgFile){
       String  imgString = Convertir.base64String(imgFile.readAsBytesSync());
       imagen = imgString;
+      //Navigator.of(context).pop();
       _fotoConroller.text = "Campo lleno";
       return imagen;
     });
@@ -134,32 +155,46 @@ class homepageState extends State<Insert> {
 
   //CLEAR TEXTFIELD VALUES
   _clearValues(){
-    _firstnameConroller.text = "";
-    _lastname1Conroller.text = "";
-    _lastname2Conroller.text = "";
-    _emailConroller.text = "";
-    _phoneConroller.text = "";
-    _matriculaConroller.text = "";
-    _fotoConroller.text = "";
+        _firstnameConroller.text = "";
+        _lastname1Conroller.text = "";
+        _lastname2Conroller.text = "";
+        _emailConroller.text = "";
+        _phoneConroller.text = "";
+        _matriculaConroller.text = "";
+        _fotoConroller.text = "";
   }
 
   _showValues(Student student){
-    _firstnameConroller.text = student.firstName;
-    _lastname1Conroller.text = student.lastName1;
-    _lastname2Conroller.text = student.lastName2;
-    _emailConroller.text = student.email;
-    _phoneConroller.text = student.phone;
-    _matriculaConroller.text = student.matricula;
+        _firstnameConroller.text = student.firstName;
+        _lastname1Conroller.text = student.lastName1;
+        _lastname2Conroller.text = student.lastName2;
+        _emailConroller.text = student.email;
+        _phoneConroller.text = student.phone;
+        _matriculaConroller.text = student.matricula;
   }
 
+  //******************************************************************
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.teal[700],
-        title: Text("INSERT DATA"),),
+        backgroundColor: Colors.yellow[800],
+        title: Text("INSERT DATA"),
+        /*actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: (){
+              BDConnections.createTable();
+            },),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: (){
+              BDConnections.selectData();
+            },)
+        ],*/
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -167,23 +202,25 @@ class homepageState extends State<Insert> {
             children: <Widget>[
               Container(
                 child: Column(children: <Widget>[
+                  //TEXT FORM FIELD PARA FOTO
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextField(
-                      controller: _fotoConroller,
-                      decoration: InputDecoration(
+                       padding: const EdgeInsets.all(20.0),
+                       child: TextField(
+                    controller: _fotoConroller,
+                    decoration: InputDecoration(
                           labelText: "Photo",
                           suffixIcon: RaisedButton(
-                            color: Colors.teal[600],
-                            onPressed: pickImagefromGallery,
-                            child: Text("Select image", textAlign: TextAlign.center,),
+                            color: Colors.yellow[800],
+                              onPressed: pickImagefromGallery,
+                              //child: Icon(Icons.camera_alt),
+                              child: Text("Clic aquí", textAlign: TextAlign.center,style: TextStyle(color: Colors.white)),
                           )),
                     ),
-                  ),
+                     ),
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: TextField(controller: _firstnameConroller,
-                      decoration: InputDecoration.collapsed(hintText: "First Name"),),
+                    decoration: InputDecoration.collapsed(hintText: "First Name"),),
                   ),
                   Padding(
                       padding: EdgeInsets.all(20),
@@ -210,6 +247,8 @@ class homepageState extends State<Insert> {
                       child: TextField(controller: _matriculaConroller,
                         decoration: InputDecoration.collapsed(hintText: "Matricula"),)
                   ),
+                  //ADD AN UPDATE BUTTON AND A CANCEL BUTTON
+                  //SHOW ONLY WHEN UPDATING DATA
                   _isUpdating ?
                   new Row(
                     children: <Widget>[
@@ -230,7 +269,7 @@ class homepageState extends State<Insert> {
                       ),
                     ],
                   ):Container(),
-                ],
+                 ],
                 ),
               ),
             ],
@@ -239,12 +278,11 @@ class homepageState extends State<Insert> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          _showSnackBar(context, 'Datos ingresados correctamente');
           _insertData();
           _clearValues();
         },
         child: Icon(Icons.add, color: Colors.white),
-        backgroundColor: Colors.teal[600],
+        backgroundColor: Colors.yellow[800],
       ),
     );
   }
